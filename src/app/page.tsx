@@ -19,148 +19,148 @@ import {
 } from "@tonconnect/ui-react";
 import { TonProofService } from "@/utils";
 
-function TonSDK() {
-  const [connector, setConnector] = useState<any>();
-  const [walletList, setWalletList] = useState<any[]>([]);
+// function TonSDK() {
+//   const [connector, setConnector] = useState<any>();
+//   const [walletList, setWalletList] = useState<any[]>([]);
 
-  const fetchWalletList = useCallback(async () => {
-    const walletsList = await connector.getWallets();
-    setWalletList(walletsList);
-    console.log("*********fetch", walletsList);
-    const unsubscribe = connector.onStatusChange((walletInfo) => {
-      console.log("Connection status:", walletInfo);
-    });
-    return () => unsubscribe();
-  }, [connector]);
+//   const fetchWalletList = useCallback(async () => {
+//     const walletsList = await connector.getWallets();
+//     setWalletList(walletsList);
+//     console.log("*********fetch", walletsList);
+//     const unsubscribe = connector.onStatusChange((walletInfo) => {
+//       console.log("Connection status:", walletInfo);
+//     });
+//     return () => unsubscribe();
+//   }, [connector]);
 
-  const connectTG = useCallback(async () => {
-    if (!connector) return;
+//   const connectTG = useCallback(async () => {
+//     if (!connector) return;
 
-    const walletsList = await connector.getWallets();
-    const tgWallet = walletsList[0] as any;
-    console.log("*********fetch", walletsList);
-    const unsubscribe = connector.onStatusChange((walletInfo: any) => {
-      console.log("Connection status:", walletInfo);
-    });
+//     const walletsList = await connector.getWallets();
+//     const tgWallet = walletsList[0] as any;
+//     console.log("*********fetch", walletsList);
+//     const unsubscribe = connector.onStatusChange((walletInfo: any) => {
+//       console.log("Connection status:", walletInfo);
+//     });
 
-    const link = connector.connect({
-      universalLink: tgWallet.universalLink,
-      bridgeUrl: tgWallet.bridgeUrl,
-    });
+//     const link = connector.connect({
+//       universalLink: tgWallet.universalLink,
+//       bridgeUrl: tgWallet.bridgeUrl,
+//     });
 
-    console.log("Connection link:", link);
-    window.open(link, "_blank");
+//     console.log("Connection link:", link);
+//     window.open(link, "_blank");
 
-    return () => unsubscribe();
-  }, [connector]);
+//     return () => unsubscribe();
+//   }, [connector]);
 
-  const connectTonKeeper = useCallback(async () => {
-    try {
-      const walletsList = await connector.getWallets();
-      const tgWallet = walletsList[1] as any;
-      console.log("*********fetch", walletsList);
-      const unsubscribe = connector.onStatusChange((walletInfo: any) => {
-        console.log("Connection status:", walletInfo);
-      });
+//   const connectTonKeeper = useCallback(async () => {
+//     try {
+//       const walletsList = await connector.getWallets();
+//       const tgWallet = walletsList[1] as any;
+//       console.log("*********fetch", walletsList);
+//       const unsubscribe = connector.onStatusChange((walletInfo: any) => {
+//         console.log("Connection status:", walletInfo);
+//       });
 
-      const link = connector.connect({
-        universalLink: tgWallet.universalLink,
-        bridgeUrl: tgWallet.bridgeUrl,
-      });
+//       const link = connector.connect({
+//         universalLink: tgWallet.universalLink,
+//         bridgeUrl: tgWallet.bridgeUrl,
+//       });
 
-      alert("Connection link:" + link);
-      window.open(link, "_blank");
-    } catch (error) {
-      alert("error" + JSON.stringify(error));
-    }
-  }, [connector]);
+//       alert("Connection link:" + link);
+//       window.open(link, "_blank");
+//     } catch (error) {
+//       alert("error" + JSON.stringify(error));
+//     }
+//   }, [connector]);
 
-  const sendTon = useCallback(async () => {
-    await connector.sendTransaction({
-      validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
-      messages: [
-        {
-          address:
-            "0:412410771DA82CBA306A55FA9E0D43C9D245E38133CB58F1457DFB8D5CD8892F", // 目的地址
-          amount: "20000000", //以nanotons计的Toncoin
-        },
-      ],
-    });
-  }, [connector]);
+//   const sendTon = useCallback(async () => {
+//     await connector.sendTransaction({
+//       validUntil: Math.floor(Date.now() / 1000) + 60, // 60 sec
+//       messages: [
+//         {
+//           address:
+//             "0:412410771DA82CBA306A55FA9E0D43C9D245E38133CB58F1457DFB8D5CD8892F", // 目的地址
+//           amount: "20000000", //以nanotons计的Toncoin
+//         },
+//       ],
+//     });
+//   }, [connector]);
 
-  const disConnect = useCallback(async () => {
-    if (!connector) return alert("no connector");
+//   const disConnect = useCallback(async () => {
+//     if (!connector) return alert("no connector");
 
-    connector.disconnect();
-  }, [connector]);
+//     connector.disconnect();
+//   }, [connector]);
 
-  const init = useCallback(async () => {
-    if (!localStorage) return;
+//   const init = useCallback(async () => {
+//     if (!localStorage) return;
 
-    const connector = new TonConnect({
-      manifestUrl:
-        "https://raw.githubusercontent.com/alex-beango/ton-config/main/tonconnect-manifest.json",
-      storage: localStorage,
-    });
-    setConnector(connector);
-  }, []);
+//     const connector = new TonConnect({
+//       manifestUrl:
+//         "https://raw.githubusercontent.com/alex-beango/ton-config/main/tonconnect-manifest.json",
+//       storage: localStorage,
+//     });
+//     setConnector(connector);
+//   }, []);
 
-  const connectCurrentWallet = useCallback(
-    async (item: any) => {
-      if (!connector) return;
+//   const connectCurrentWallet = useCallback(
+//     async (item: any) => {
+//       if (!connector) return;
 
-      const link = connector.connect({
-        universalLink: item.universalLink,
-        bridgeUrl: item.bridgeUrl,
-      });
-      console.log("Connection link:", link);
-      window.open(link, "_blank");
-      return;
-    },
-    [connector]
-  );
+//       const link = connector.connect({
+//         universalLink: item.universalLink,
+//         bridgeUrl: item.bridgeUrl,
+//       });
+//       console.log("Connection link:", link);
+//       window.open(link, "_blank");
+//       return;
+//     },
+//     [connector]
+//   );
 
-  return (
-    <main className=" min-h-screen flex-col items-center justify-between">
-      <div className="font-bold text-[20px]"></div>
-      <button onClick={init}>init</button>
-      <div>======</div>
-      <button onClick={fetchWalletList}>fetchWalletList</button>
-      <div>======</div>
-      <button onClick={connectTG}>connect TG</button>
-      <div>======</div>
-      <button onClick={connectTonKeeper}>connect tonkeeper</button>
-      <div>======</div>
-      <button onClick={sendTon}>send</button>
-      <div>======</div>
-      <button style={{ color: "red" }} onClick={disConnect}>
-        Disconnect!
-      </button>
+//   return (
+//     <main className=" min-h-screen flex-col items-center justify-between">
+//       <div className="font-bold text-[20px]"></div>
+//       <button onClick={init}>init</button>
+//       <div>======</div>
+//       <button onClick={fetchWalletList}>fetchWalletList</button>
+//       <div>======</div>
+//       <button onClick={connectTG}>connect TG</button>
+//       <div>======</div>
+//       <button onClick={connectTonKeeper}>connect tonkeeper</button>
+//       <div>======</div>
+//       <button onClick={sendTon}>send</button>
+//       <div>======</div>
+//       <button style={{ color: "red" }} onClick={disConnect}>
+//         Disconnect!
+//       </button>
 
-      <div>********</div>
-      <div>
-        <span>wallet list</span>
-        <div>
-          {walletList.map((item: any) => {
-            return (
-              <Button
-                key={item.appName}
-                onClick={() => connectCurrentWallet(item)}
-              >
-                {item.appName}
-              </Button>
-            );
-          })}
-        </div>
-      </div>
-    </main>
-  );
-}
+//       <div>********</div>
+//       <div>
+//         <span>wallet list</span>
+//         <div>
+//           {walletList.map((item: any) => {
+//             return (
+//               <Button
+//                 key={item.appName}
+//                 onClick={() => connectCurrentWallet(item)}
+//               >
+//                 {item.appName}
+//               </Button>
+//             );
+//           })}
+//         </div>
+//       </div>
+//     </main>
+//   );
+// }
 
 function TonUIReact() {
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
-  const wallet = useTonWallet();
+  const wallet = useTonWallet() as any;
   const [tonConnectUI] = useTonConnectUI();
 
   const connectionRestored = useIsConnectionRestored();
@@ -169,7 +169,9 @@ function TonUIReact() {
   console.log("wallet", wallet);
 
   const signArr = useMemo(() => {
-    return Object.entries(wallet?.connectItems?.tonProof?.proof || {}) || [];
+    return (
+      Object.entries((wallet?.connectItems?.tonProof as any)?.proof || {}) || []
+    );
   }, [wallet]);
 
   console.log("signArr", wallet?.connectItems?.tonProof, signArr);
