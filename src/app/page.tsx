@@ -174,24 +174,25 @@ function TonUIReact() {
 
   console.log("signArr", wallet?.connectItems?.tonProof, signArr);
 
-  const verifyAndGenerateToken = useCallback(() => {
-    const getPubKey = async () => {
-      return wallet?.account.publicKey;
-    };
+  // const verifyAndGenerateToken = useCallback(() => {
+  //   const getPubKey = async () => {
+  //     return wallet?.account.publicKey;
+  //   };
 
-    const result = new TonProofService().checkProof({
-      payload: wallet?.connectItems?.tonProof,
-      getWalletPublicKey: getPubKey,
-    });
+  //   const result = new TonProofService()?.checkProof({
+  //     payload: wallet?.connectItems?.tonProof,
+  //     getWalletPublicKey: getPubKey,
+  //   });
 
-    console.log("result", result);
-  }, []);
+  //   console.log("result", result);
+  // }, [wallet?.account.publicKey, wallet?.connectItems?.tonProof]);
 
   useEffect(() => {
     tonConnectUI.setConnectRequestParameters({
       state: "ready",
       value: { tonProof: "E5B4ARS6CdOI2b5e1jz0jnS-x-a3DgfNXprrg_3pec0=" },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!connectionRestored)
@@ -234,7 +235,7 @@ function TonUIReact() {
         <span className="text-xl">Returned Sign Message</span>
         {signArr.map(([key, value]) => {
           return (
-            <div>
+            <div key={key}>
               <span className="text-l text-red-500">{key}</span>
               {": "}
               <span>{JSON.stringify(value)}</span>
@@ -242,12 +243,12 @@ function TonUIReact() {
           );
         })}
       </section>
-      <section>
+      {/* <section>
         <span className="text-xl">Verify And Generate Token</span>
         <div>
           <Button onClick={verifyAndGenerateToken}>Go</Button>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
